@@ -38,50 +38,47 @@ def terminal(s):
 # elle va prendre la valeur 1 si max gagne et -1 sinon
 
 def alphaBeta(s):
-    branchesElagees= 0
-    (action, v) = maxValue(s, -9999, 9999,branchesElagees)
+    branchesElagees = 0
+    (action, v,branchesElagees) = maxValue(s, -9999, 9999, branchesElagees)
     print()
-    return (action,branchesElagees)
+    return (action, branchesElagees)
 
 
-
-
-
-def minValue(s, alpha, beta,branchesElagees):
+def minValue(s, alpha, beta, branchesElagees):
     if terminal(s):  # dans ce cas min ne peux pas jouer => max a gagné
-        return (None, 1)
+        return (None, 1,0)
     (action, v) = (None, 9999)
     count = 0
     possibleActions = actionsPossibles(s)
     for a in possibleActions:
         count += 1
-        (a1, v1) = maxValue(resultat(s, a), alpha, beta,branchesElagees)
+        (a1, v1,branchesElagees) = maxValue(resultat(s, a), alpha, beta, branchesElagees)
         if(v1 < v):
             action = a
             v = v1
         if v <= alpha:
             branchesElagees += len(possibleActions)-count
-            return (action, v)
+            return (action, v,branchesElagees)
         beta = min(beta, v)
-    return (action, v)
+    return (action, v,branchesElagees)
 
 
-def maxValue(s, alpha, beta,branchesElagees):
+def maxValue(s, alpha, beta, branchesElagees):
     if terminal(s):  # dans ce cas max ne peux pas jouer => min a gagné
-        return (None, -1)
+        return (None, -1,0)
     (action, v) = (None, -9999)
     count = 0
     possibleActions = actionsPossibles(s)
     for a in possibleActions:
-        (a1, v1) = minValue(resultat(s, a), alpha, beta,branchesElagees)
+        (a1, v1,branchesElagees) = minValue(resultat(s, a), alpha, beta, branchesElagees)
         if(v1 > v):
             action = a
             v = v1
         if v >= beta:
             branchesElagees += len(possibleActions)-count
-            return (action, v)
+            return (action, v,branchesElagees)
         alpha = max(alpha, v)
-    return (action, v)
+    return (action, v,branchesElagees)
 
 
 def jeu():
@@ -92,11 +89,11 @@ def jeu():
     s = [n]
     while(not (terminal(s))):
         if tour == 0:
-            (a,nbBranches) = alphaBeta(s)
+            (a, nbBranches) = alphaBeta(s)
             print("Action faite par l'ordinateur: ", alphaBeta(s))
             s = resultat(s, a)
             print("Etat du jeu aprés l'action de l'ordinateur", s)
-            print("Nombre de branches élaguées:",nbBranches)
+            print("Nombre de branches élaguées:", nbBranches)
             tour = 1
         else:
             print("À toi de jouer !")

@@ -34,8 +34,6 @@ def terminal(s):
     return False
 
 
-# la variable score contient le score du jeu
-# elle va prendre la valeur 1 si max gagne et -1 sinon
 
 def minMaxDecision(s):
     maxScore = -2
